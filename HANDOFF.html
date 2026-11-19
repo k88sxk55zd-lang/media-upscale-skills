@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>媒体放大技能包 · 交接文档</title>
+<style>
+  :root{
+    --bg:#0a0e1a; --cyan:#22d3ee; --violet:#a78bfa; --pink:#f472b6;
+    --ink:#1e293b; --muted:#64748b; --line:#e2e8f0; --card:#f8fafc;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Microsoft YaHei","PingFang SC",-apple-system,sans-serif;color:var(--ink);background:#eef2f7;line-height:1.75}
+  .wrap{max-width:920px;margin:0 auto;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.12)}
+
+  /* ---- cover ---- */
+  .cover{background:radial-gradient(circle at 20% 20%,#1b2447 0%,transparent 45%),
+         radial-gradient(circle at 80% 70%,#3b1d54 0%,transparent 50%),var(--bg);
+         color:#fff;padding:80px 56px;position:relative;overflow:hidden;min-height:440px;
+         display:flex;flex-direction:column;justify-content:center}
+  .cover::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(34,211,238,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,.06) 1px,transparent 1px);
+    background-size:32px 32px;mask-image:linear-gradient(to bottom,#000,transparent)}
+  .cover .tag{display:inline-block;font-size:13px;letter-spacing:3px;color:var(--cyan);
+    border:1px solid var(--cyan);border-radius:20px;padding:5px 16px;margin-bottom:28px;align-self:flex-start;position:relative}
+  .cover h1{font-size:46px;line-height:1.2;position:relative;
+    background:linear-gradient(90deg,#fff,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .cover .sub{font-size:20px;color:#cbd5e1;margin-top:18px;position:relative}
+  .cover .meta{margin-top:44px;font-size:14px;color:#94a3b8;position:relative;display:flex;gap:28px;flex-wrap:wrap}
+  .cover .meta b{color:var(--cyan);font-weight:600}
+
+  /* ---- body ---- */
+  .body{padding:48px 56px 64px}
+  h2{font-size:24px;margin:40px 0 16px;padding-left:14px;border-left:4px solid var(--cyan)}
+  h2:first-child{margin-top:0}
+  h3{font-size:18px;margin:24px 0 10px;color:#334155}
+  p{margin:10px 0;color:#334155}
+  .lead{background:linear-gradient(90deg,#ecfeff,#f5f3ff);border:1px solid var(--line);
+    border-radius:12px;padding:18px 22px;font-size:15px}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+  th{background:#f1f5f9;font-weight:600;color:#1e293b}
+  tr:nth-child(even) td{background:#fafbfc}
+  code{background:#f1f5f9;border:1px solid var(--line);border-radius:5px;padding:2px 6px;font-family:Consolas,monospace;font-size:13px;color:#0f766e}
+  pre{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:12px 0;font-size:13px;line-height:1.6}
+  pre .c{color:#64748b}
+  .step{display:flex;gap:14px;margin:14px 0;align-items:flex-start}
+  .step .n{flex:0 0 30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--violet));
+    color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .step .t{flex:1}
+  .warn{background:#fff7ed;border-left:4px solid #f59e0b;border-radius:8px;padding:12px 18px;margin:12px 0;font-size:14px}
+  .ok{color:#059669;font-weight:600}.miss{color:#dc2626;font-weight:600}
+  .pill{display:inline-block;background:#f1f5f9;border-radius:6px;padding:1px 8px;font-size:12px;color:#475569;margin:0 2px}
+  footer{background:var(--bg);color:#64748b;text-align:center;padding:24px;font-size:13px}
+  footer span{color:var(--cyan)}
+  ol,ul{margin:10px 0 10px 24px}li{margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <span class="tag">HANDOFF DOCUMENT · 交接文档</span>
+    <h1>媒体放大技能包<br>Media Upscale Skills</h1>
+    <div class="sub">图片放大 Upscayl × 视频放大 Topaz —— 部署 · 验证 · 调用全说明</div>
+    <div class="meta">
+      <span><b>面向</b> 其他 AI 工具 / 新电脑</span>
+      <span><b>包体</b> &lt; 100 KB（仅脚本+文档）</span>
+      <span><b>交接日期</b> 2026-11-19</span>
+      <span><b>环境</b> Windows + NVIDIA GPU</span>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <p class="lead">一套纯命令行封装的两套 AI 放大能力。包里<strong>只有脚本和文档</strong>，不含软件本体与模型——部署机需先装好 Upscayl 桌面版和 Topaz Video AI。脚本采用「环境变量 → 自动探测 → 默认路径」三级路径解析，换机器一般零改动。所有固定值与踩坑均为原机 2026-07 ~ 2026-09 实跑验证。</p>
+
+    <h2>0. 技能一览</h2>
+    <table>
+      <tr><th>技能</th><th>用途</th><th>触发词</th></tr>
+      <tr><td><code>upscayl-batch</code></td><td>图片放大（阿普升图），固定 2 倍 PNG 无损</td><td>放大图片 / Upscayl / 阿普升图 / 批量放大</td></tr>
+      <tr><td><code>topaz-video-x4</code></td><td>视频放大（Topaz），1080P/2K/4K 三档或 4 倍</td><td>Topaz 放大 / 视频超分 / 出 4K / 视频 4 倍</td></tr>
+    </table>
+
+    <h2>1. 依赖清单（部署机必须满足）</h2>
+    <table>
+      <tr><th>依赖</th><th>用途</th><th>自检</th></tr>
+      <tr><td>Windows + PowerShell 5.1 或 7</td><td>运行 .ps1</td><td><code>$PSVersionTable.PSVersion</code></td></tr>
+      <tr><td>Upscayl 桌面版（upscayl-bin.exe + resources/models）</td><td>图片放大</td><td>自检脚本第 1 段</td></tr>
+      <tr><td>Topaz Video AI 6.x（自带 ffmpeg/ffprobe + prob-4 模型）</td><td>视频放大</td><td>自检脚本第 2 段</td></tr>
+      <tr><td>NVIDIA 显卡 + 驱动（原机 RTX 3070 Ti）</td><td>两者都用 GPU</td><td><code>nvidia-smi</code></td></tr>
+    </table>
+    <div class="warn">没有这些软件时先装软件。脚本本身不含推理引擎和模型权重，无法替代软件。</div>
+
+    <h2>2. 部署五步</h2>
+    <div class="step"><div class="n">1</div><div class="t">下载解压到无中文、无空格路径，如 <code>C:\tools\media-upscale-skills</code>。</div></div>
+    <div class="step"><div class="n">2</div><div class="t">运行自检 <code>powershell -ExecutionPolicy Bypass -File check-env.ps1</code>，目标是 Upscayl / Topaz / GPU 三段全 <span class="ok">OK</span>。</div></div>
+    <div class="step"><div class="n">3</div><div class="t">出现 <span class="miss">MISS</span>：软件在非常规盘就改 <code>set-env.example.ps1</code> 设环境变量；模型缺失就在软件里确认已下载（Topaz 的 prob-4.json、Upscayl 的 ultrasharp-4x）。</div></div>
+    <div class="step"><div class="n">4</div><div class="t">把 <code>upscayl-batch/</code> 和 <code>topaz-video-x4/</code> 复制到目标 AI 工具的技能目录；各技能靠自身 SKILL.md 的 frontmatter 被识别触发。</div></div>
+    <div class="step"><div class="n">5</div><div class="t">冒烟测试：图片用 1 张小图跑一次；视频用几秒短片跑 <code>-Preset 1080p</code>，确认按固定分辨率出片。</div></div>
+
+    <h2>3. 调用契约</h2>
+    <h3>3.1 图片放大</h3>
+<pre><span class="c"># 基本（默认输出到 输入\upscaled_2x）</span>
+powershell -ExecutionPolicy Bypass -File upscayl-batch\upscayl-batch.ps1 -InputDir "图片文件夹"
+
+<span class="c"># 指定输出 + 2 个并行</span>
+powershell -ExecutionPolicy Bypass -File upscayl-batch\upscayl-batch.ps1 -InputDir "输入" -OutputDir "输出" -Workers 2</pre>
+    <p>支持 png/jpg/jpeg/webp，统一出 <code>.png</code>；<strong>断点续跑</strong>：已有同名 png 自动跳过；路径解析优先级 <code>-Exe/-Models</code> 参数 &gt; 环境变量 &gt; 自动探测。Git Bash 用户可用 <code>.sh</code> 版。</p>
+
+    <h3>3.2 视频放大</h3>
+<pre><span class="c"># 默认 all = 一次出 1080P + 2K + 4K 三份</span>
+powershell -ExecutionPolicy Bypass -File topaz-video-x4\topaz-video-x4.ps1 -Preset all "视频.mp4"
+
+<span class="c"># 单档：1080p / 2k / 4k ；4 倍：x4</span>
+powershell -ExecutionPolicy Bypass -File topaz-video-x4\topaz-video-x4.ps1 -Preset 4k "视频.mp4"</pre>
+    <p>输出落在源视频同目录，加后缀 <code>_1080p/_2k/_4k/_x4</code>。AI 调用<strong>不要</strong>加 <code>-WaitAtEnd</code>（会卡住等回车），只有 .bat 拖拽入口才加。成功判据：打印 <code>RESULT_PATH=...</code> 且 ffprobe 读回宽高与期望一致。</p>
+
+    <h2>4. 固定规则（不可改，已实测）</h2>
+    <table>
+      <tr><th>项</th><th>固定值</th></tr>
+      <tr><td>图片参数</td><td>2 倍 / PNG 压缩 0 无损 / ultrasharp-4x / TTA 关 / GPU 0；单张循环比整目录喂更快（63s vs 98s，同 3 张图）</td></tr>
+      <tr><td>视频三档</td><td>1080P=1890×1080、2K=2520×1440、4K=3780×2160（按源片 7:4 定，<strong>不是</strong> 1920/2560/3840）</td></tr>
+      <tr><td>视频模型/环境变量</td><td>prob-4；必须是 <code>TVAI_MODEL_DIR</code>（写错报 Model not found）</td></tr>
+      <tr><td>编码</td><td>宽或高 ≤4096 → h264_nvenc high；4097~8192 → hevc_nvenc main（HEVC 不能写 high）；&gt;8192 跳过</td></tr>
+      <tr><td>声音</td><td><code>-c:a copy</code> 原样拷贝</td></tr>
+    </table>
+
+    <h2>5. 踩坑清单（接手前必读）</h2>
+    <h3>图片线</h3>
+    <ol>
+      <li><b>盘符搞混</b>：Upscayl 常在 F 盘，图片在 C 盘，传路径确认盘符。</li>
+      <li><b>中文/空格/括号路径加双引号</b>，否则 shell 解析失败。</li>
+      <li><b>别重装、别从 GitHub 下 Upscayl</b>，复用本机已装桌面版。</li>
+      <li><b>参数名版本差异</b>：--help 里倍数可能显示 -z，实际用 -s 正常。</li>
+      <li><b>.ps1 编码</b>：含中文必须 UTF-8 带 BOM；本包脚本源码刻意纯 ASCII（中文目录用 <code>[char]</code> 码点拼），改动请保持。</li>
+      <li><b>job 传参</b>：Start-Job 里 <code>$using:</code> 传对象会取空；本包改传字符串路径数组已规避。</li>
+      <li><b>估时长先测显存</b>：空闲约 18s/张，显存被挤占劣化到 42~109s/张（差 6 倍）。</li>
+      <li><b>整批前先筛源尺寸</b>：已达标的图会被二次放大成 4 倍，需预先筛掉。</li>
+    </ol>
+    <h3>视频线</h3>
+    <ol>
+      <li><b>环境变量名写错 = 找不到模型</b>（最高频），只认 <code>TVAI_MODEL_DIR</code>。</li>
+      <li>必须用 Topaz 自带 ffmpeg，系统 ffmpeg 没有 <code>tvai_up</code> 滤镜。</li>
+      <li>指定分辨率用 <code>scale=0</code> + 写死宽高；4 倍用 <code>scale=4</code> + 写死 4 倍宽高。</li>
+      <li>HEVC 误写 <code>-profile:v high</code> 会先报错，易误判成模型坏。</li>
+      <li>三档是 1890/2520/3780，别改成 1920/2560/3840。</li>
+    </ol>
+
+    <h2>6. 已验证记录（原机基线）</h2>
+    <p><span class="pill">图片 2026-07-24</span> 3 张同批：单张循环 63s vs 目录批量 98s；单张 2400×1792→4800×3584 约 21s；2752×1536→2x 空闲 16.9~18.1s/张（RTX 3070 Ti）。</p>
+    <p><span class="pill">视频 2026-09-01</span> 源片 1344×768/24fps/10.14s：1080P≈20MB、2K≈34MB、4K≈78MB、4 倍 5376×3072 HEVC≈137MB，时长均 10.144s。</p>
+    <p><span class="pill">交接 2026-11-19</span> 本包脚本相对原机唯一改动 = 路径解析通用化 + 源码纯 ASCII 化 + bat 路径改相对；核心调用参数与执行循环保持原样，自检与冒烟测试通过。</p>
+
+    <h2>7. 不要做的事</h2>
+    <ul>
+      <li>不要把软件本体、模型打包进技能包（体积爆炸且涉及授权）。</li>
+      <li>不要宣称成功却不核验：图片看尺寸是否翻倍、视频用 ffprobe 读回宽高，空文件/原分辨率 = 失败。</li>
+      <li>不要改成云端模型 / 第三方权重 / 普通 <code>scale</code> 插值充数。</li>
+    </ul>
+
+  </div>
+
+  <footer>媒体放大技能包 · 交接文档 &nbsp;|&nbsp; GitHub: <span>github.com/k88sxk55zd-lang/media-upscale-skills</span> &nbsp;|&nbsp; 2026-11-19</footer>
+</div>
+</body>
+</html>
